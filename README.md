@@ -1,5 +1,5 @@
 # garbagecollector
-Trabalho da disciplina de Linguagens de Programação onde implementaremos um coletor de lixo na linguagem C
+Trabalho da disciplina de Linguagens de Programação onde implementaremos um coletor de lixo na linguagem C utilizando a técnica de contagem de referências
 - coletor.c :
   Código fonte da biblioteca estática libcoletor.a
   Contém as funções utilizadas no programa:
