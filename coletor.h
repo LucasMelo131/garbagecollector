@@ -17,5 +17,7 @@ void *malloc2 (int tamanho);
 void atrib2(void **endereco1, void *endereco2);
 void coleta();
 void dump();
+//imprimir o que tem no end -> int
+// -> char
 
 #endif //_GARBAGE_COLLECTOR_H_
