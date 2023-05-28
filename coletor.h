@@ -15,7 +15,7 @@ extern Heap *simulaMemoria;
 // funções da biblioteca estática
 void *malloc2(int tamanho);
 void coleta();
-void atrib2(void *endereco1, void *endereco2);
+void atrib2(void **endereco1, void *endereco2);
 void dump();
 
 #endif //_GARBAGE_COLLECTOR_H_

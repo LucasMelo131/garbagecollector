@@ -65,14 +65,14 @@ void coleta()
 // esta função realiza a atribuição de ponteiros em C
 // faz uma referencia a um endereço apontar para outro endereço, assim o primeiro endereço perde
 // uma refêrencia(diminui o contador) enquanto o segundo ganha uma mais (aumenta o contador)
-void atrib2(void *endereco1, void *endereco2)
+void atrib2(void **endereco1, void *endereco2)
 {
     // estrutura auxiliar para iterar na lista
     Heap *aux = simulaMemoria;
     // percorre a lista encontrando os enderecos referenciados e atualizando os contadores de referencia de cada um
     while (aux)
     {
-        if (aux->endereco == endereco1)
+        if (aux->endereco == *endereco1)
         {
             aux->contador -= 1;
         }
@@ -84,7 +84,7 @@ void atrib2(void *endereco1, void *endereco2)
     }
 
     // faz o ponteiro de endereco 1 apontar para endereco2
-    endereco1 = endereco2;
+    *endereco1 = endereco2;
 }
 
 //mostra como está o heap para o usuário
@@ -99,10 +99,17 @@ void dump()
     Heap *aux = simulaMemoria;
     while (aux)
     {
-        if (aux->contador == 0) // remove o endereço da heap se seu contador = 0
+        if (aux->contador == 0)
+        { // remove o endereço da heap se seu contador = 0
+            printf("Endereco: %p, Contador = %d\n", aux->endereco, aux->contador);
+            aux = aux->prox;
             coleta();
-        printf("Endereco: %p, Contador = %d\n", aux->endereco, aux->contador);
-        aux = aux->prox;
+        }
+        else
+        {
+            printf("Endereco: %p, Contador = %d\n", aux->endereco, aux->contador);
+            aux = aux->prox;
+        }
     }
     printf("\n");
 }

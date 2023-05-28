@@ -10,14 +10,16 @@ int main(int argc, char const **argv)
     int *w = malloc2(sizeof(int));
     dump();
     *w = 20;
-    atrib2(v, w);
+    atrib2(&v, w);
     dump();
+    printf("Valor armazenado em v = %d\n\n", *v);
     char *c = malloc2(sizeof(char));
     *c = 'Z';
     dump();
-    atrib2(w, NULL);
+    atrib2(&w, NULL);
     dump();
-    atrib2(w, NULL);
+    atrib2(&v, NULL);
+    dump();
     dump();
     return 0;
 }
