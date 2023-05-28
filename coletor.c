@@ -15,7 +15,7 @@ void *malloc2(int tamanho)
     end->prox = NULL;
 
     // se a heap tem elementos, inserimos a nova area alocada no início
-    if (simulaMemoria != NULL)
+    if (simulaMemoria)
     {
         end->prox = simulaMemoria;
     }
@@ -30,37 +30,49 @@ void *malloc2(int tamanho)
 // limpa a memória das áreas alocadas com 0 no contador de referencia
 void coleta()
 {
-    Heap *aux = simulaMemoria;
-    Heap *next = aux->prox; // recebe a posição posterior da heap
-
     // se a heap estiver vazia não faz nada
-    if (!aux)
+    if (!simulaMemoria)
         return;
 
-    // se o primeiro elemento tiver contador = 0, removê-lo
-    if (aux->contador == 0)
+    Heap *ant, *aux = simulaMemoria;
+    // enquanto os elementos na cabeça da lista possuirem contador = 0 serão removidos
+    while (aux && aux->contador == 0)
     {
-        simulaMemoria = next;
-        free(aux->endereco);
+        simulaMemoria = aux->prox;
+        printf("Endereco %p removido\n", aux->endereco);
         free(aux);
         aux = simulaMemoria;
-        next = aux->prox;
     }
-    // remove o restante das areas com contador = 0 recursivamente
-    coleta();
+
+    // Remoção de endereços com contador = 0 para o restante da heap
+    while (aux)
+    {
+        if (aux->contador != 0)
+        {
+            ant = aux;
+            aux = aux->prox;
+        }
+        else
+        {
+            ant->prox = aux->prox;
+            printf("Endereco %p removido\n", aux->endereco);
+            free(aux);
+            aux = ant->prox;
+        }
+    }
 }
 
 // esta função realiza a atribuição de ponteiros em C
 // faz uma referencia a um endereço apontar para outro endereço, assim o primeiro endereço perde
 // uma refêrencia(diminui o contador) enquanto o segundo ganha uma mais (aumenta o contador)
-void atrib2(void **endereco1, void *endereco2)
+void atrib2(void *endereco1, void *endereco2)
 {
     // estrutura auxiliar para iterar na lista
     Heap *aux = simulaMemoria;
     // percorre a lista encontrando os enderecos referenciados e atualizando os contadores de referencia de cada um
     while (aux)
     {
-        if (aux->endereco == *endereco1)
+        if (aux->endereco == endereco1)
         {
             aux->contador -= 1;
         }
@@ -72,7 +84,7 @@ void atrib2(void **endereco1, void *endereco2)
     }
 
     // faz o ponteiro de endereco 1 apontar para endereco2
-    *endereco1 = endereco2;
+    endereco1 = endereco2;
 }
 
 //mostra como está o heap para o usuário
@@ -80,7 +92,7 @@ void dump()
 {
     if (!simulaMemoria)
     {
-        printf("A heap esta vazia!!!");
+        printf("A heap esta vazia!!!\n\n");
         return;
     }
 
@@ -89,7 +101,8 @@ void dump()
     {
         if (aux->contador == 0) // remove o endereço da heap se seu contador = 0
             coleta();
-        printf("Endereco: %p, Contador = %d", aux->endereco, aux->contador);
+        printf("Endereco: %p, Contador = %d\n", aux->endereco, aux->contador);
         aux = aux->prox;
     }
+    printf("\n");
 }
