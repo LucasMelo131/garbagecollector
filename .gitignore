@@ -1,6 +1,6 @@
 .vscode/settings.json
 .vscode/tasks.json
 .vscode
-main.exe
-coletor.o
+*.o
+*.exe
 
